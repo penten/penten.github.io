@@ -1,0 +1,60 @@
+<html>
+<head>
+	<style type="text/css">
+	body {
+		margin:40px auto;
+		max-width:650px;
+		line-height:1.6;
+		font-size:18px;
+		color:#444;
+		padding:0 10px
+	}
+	h1,h2,h3{ 
+		line-height:1.2
+	}
+</style></head>
+</head>
+<body>
+	<div id="tags-container">Tags unloaded</div>
+	<div id="tasks-container">Tasks unloaded</div>
+
+
+	<script src="http://zeptojs.com/zepto.min.js"></script>
+	<script>
+	var user = "";
+	var token = "";
+	var auth = {"x-api-key": token, "x-api-user": user};
+
+	var context = {ready: 0};
+
+	function status(msg) {
+		$('#status').text(msg);
+	}
+
+	function loadData(type, f) {
+		$.ajax({
+			type: 'GET',
+			url: 'https://habitica.com:443/api/v2/user/' + type,
+			headers: auth,
+			success: f,
+			error: function(xhr, type) {
+				$('#' + type + '-container').text("Error loading");
+			}
+		});
+	}
+
+	function renderTags() {
+		$('#tags-container').html('');
+
+		$.each(context.tags, function(i, tag) {
+			var html = '<a data-id="'+ tag.id + '" href="#">' + tag.name + '</a>'; 
+			$('#tags-container').append(html);
+		});
+	}
+
+	loadData('tags', function(data) { context.tags = data; renderTags() });
+	loadData('tasks', function(data) { context.tags = data; $('#tasks-container').text('Loaded')});
+	
+	</script>
+</body>
+</html>
