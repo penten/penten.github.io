@@ -1,0 +1,52 @@
+<html>
+<head>
+	<style type="text/css">
+	body {
+		margin:40px auto;
+		max-width:650px;
+		line-height:1.6;
+		font-size:18px;
+		color:#444;
+		padding:0 10px
+	}
+	h1,h2,h3{ 
+		line-height:1.2
+	}
+</style>
+</head>
+
+<body>
+PASSCODE (numbers only): <input id='password'></input><button id='unlock'>unlock</button>
+<br/><br/>
+<div id='status'>LOCKED</div>
+<div id='answer' style='display:none'>
+I only show my secrets, when the time is right,<br/>
+maybe you should have a rest...<br/>
+and come back on thursday night &#x1F319;&#x1F320;
+</div>
+
+<script src="http://zeptojs.com/zepto.min.js"></script>
+<script>
+String.prototype.hashCode = function() {
+	var hash = 0, i, chr, len;
+	if (this.length === 0) return hash;
+	for (i = 0, len = this.length; i < len; i++) {
+		chr   = this.charCodeAt(i);
+		hash  = ((hash << 5) - hash) + chr;
+		hash |= 0; // Convert to 32bit integer
+	}
+	return hash;
+};
+
+$('#unlock').click(function() {
+	if($('#password').val() != '48662642') {
+		$('#status').text('WRONG').css('color', 'red');
+		setTimeout(function() { $('#status').text('LOCKED').css('color', 'black'); }, 1500);
+	} else {
+		$('#status').text('OPEN').css('color', 'green');
+		setTimeout(function() { $('#answer').show(); }, 1500);
+	}
+});
+</script>
+</body>
+</html>
